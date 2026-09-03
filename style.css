@@ -1,8 +1,6 @@
-/* ============================================================
-   TOKENS
-   ============================================================ */
+
 :root {
-  /* Paleta */
+  
   --ink: #0B111E;
   --ink-2: #111A2D;
   --surface: #161F35;
@@ -88,9 +86,7 @@ body {
   position: relative;
 }
 
-/* ============================================================
-   FONDO: cielo estrellado + constelación FOX (Vulpecula)
-   ============================================================ */
+
 .bg-decor {
   position: fixed;
   inset: 0;
@@ -167,9 +163,7 @@ body {
 :root[data-theme="light"] .constellation-lines path { opacity: 0.22; }
 :root[data-theme="light"] .constellation-label { opacity: 0.3; }
 
-/* ============================================================
-   AURORA — tu historial de promedios, hecho de luz
-   ============================================================ */
+
 .aurora-layer path {
   fill: none;
   stroke-width: 26;
@@ -192,9 +186,6 @@ body {
 
 :root[data-theme="light"] .aurora-layer path { mix-blend-mode: multiply; opacity: 0.35 !important; stroke-width: 20; }
 
-/* ============================================================
-   SOL / LUNA
-   ============================================================ */
 .celestial-core { animation: celestial-pulse 6s ease-in-out infinite; }
 .celestial-glow { filter: url(#sun-glow); }
 
@@ -203,9 +194,7 @@ body {
   50% { opacity: 0.75; }
 }
 
-/* ============================================================
-   CORDILLERA
-   ============================================================ */
+
 .mountain-layer { opacity: 1; }
 .mountain-back { opacity: 0.55; }
 .mountain-mid { opacity: 0.75; }
@@ -223,9 +212,7 @@ body {
 :root[data-theme="light"] .mountain-mid { opacity: 0.5; }
 :root[data-theme="light"] .mountain-front-projected { opacity: 0.3; }
 
-/* ============================================================
-   ÁRBOL DE PROGRESO
-   ============================================================ */
+
 .tree-branch { fill: none; stroke: var(--stroke); stroke-width: 1.6; opacity: 0.7; }
 .tree-leaf {
   fill: var(--pending);
@@ -279,9 +266,7 @@ button {
   color: var(--text);
 }
 
-/* ============================================================
-   HEADER
-   ============================================================ */
+
 .site-header {
   border-bottom: 1px solid var(--stroke-soft);
   background: var(--header-bg);
@@ -323,9 +308,7 @@ button {
 .student-name { font-weight: 600; font-size: 14px; }
 .student-id { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint); }
 
-/* ============================================================
-   SALUDO / MASCOTA
-   ============================================================ */
+
 .greeting-bar {
   max-width: var(--max-w);
   margin: 0 auto;
@@ -373,9 +356,7 @@ button {
 }
 .icon-btn:hover { border-color: var(--signature); transform: translateY(-1px); }
 
-/* ============================================================
-   HERO
-   ============================================================ */
+
 .hero { padding: 56px 28px 40px; }
 
 .hero-inner {
@@ -462,9 +443,7 @@ button {
 .dot-progress { background: var(--progress); }
 .dot-pending { background: var(--pending); }
 
-/* ============================================================
-   CIRCUITO (elemento firma)
-   ============================================================ */
+
 .circuit-section { padding: 8px 28px 48px; overflow-x: auto; }
 
 .circuit-wrap {
@@ -545,9 +524,7 @@ button {
   50% { box-shadow: 0 0 0 9px transparent; }
 }
 
-/* ============================================================
-   TOOLBAR / BUSCADOR
-   ============================================================ */
+
 .toolbar { padding: 0 28px 24px; }
 
 .toolbar-inner {
@@ -603,9 +580,7 @@ button {
   font-size: 13.5px;
 }
 
-/* ============================================================
-   CONTENT SECTIONS
-   ============================================================ */
+
 .content-section {
   max-width: var(--max-w);
   margin: 0 auto;
@@ -825,9 +800,7 @@ button {
 .badge-title { font-weight: 600; font-size: 13.5px; }
 .badge-desc { font-size: 12px; color: var(--text-faint); line-height: 1.4; }
 
-/* ============================================================
-   SIMULADOR
-   ============================================================ */
+
 .simulator-card {
   background: var(--surface);
   border: 1px solid var(--stroke-soft);
@@ -969,9 +942,6 @@ button {
 }
 .resource-quick-link:hover { text-decoration: underline; }
 
-/* ============================================================
-   TOAST
-   ============================================================ */
 .toast {
   position: fixed;
   bottom: 24px;
@@ -1013,9 +983,7 @@ button {
 }
 .toast-action:hover { opacity: 0.85; }
 
-/* ============================================================
-   FOOTER
-   ============================================================ */
+
 .site-footer {
   border-top: 1px solid var(--stroke-soft);
   padding: 32px 28px 40px;
@@ -1039,9 +1007,7 @@ button {
 }
 .print-link-btn:hover { border-color: var(--signature); }
 
-/* ============================================================
-   ANALÍTICA
-   ============================================================ */
+
 .analytics-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1111,9 +1077,7 @@ button {
 .scenario-btn.active { background: var(--signature-dim); border-color: var(--signature); color: var(--signature); font-weight: 600; }
 .scenario-btn:hover { border-color: var(--signature); }
 
-/* ============================================================
-   PANEL DE EDICIÓN (drawer)
-   ============================================================ */
+
 .editor-overlay {
   position: fixed;
   inset: 0;
