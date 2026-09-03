@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FOX · Tablero académico — Ingeniería de Sistemas</title>
+<meta name="description" content="Tablero académico de Ingeniería de Sistemas: progreso, logros, analítica y simulador de notas." />
+<meta name="theme-color" content="#0B111E" />
+<meta property="og:title" content="FOX — Tablero académico" />
+<meta property="og:description" content="Progreso de Ingeniería de Sistemas: logros, analítica y simulador de notas." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="icons/icon-512.png" />
+<meta name="twitter:card" content="summary" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icons/icon-192.png" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-decor" aria-hidden="true">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="sky-fade" cx="50%" cy="15%" r="95%">
+          <stop offset="0%" stop-color="white" stop-opacity="1" />
+          <stop offset="70%" stop-color="white" stop-opacity="0.6" />
+          <stop offset="100%" stop-color="white" stop-opacity="0.15" />
+        </radialGradient>
+        <mask id="sky-mask">
+          <rect width="1440" height="900" fill="url(#sky-fade)" />
+        </mask>
+
+        <filter id="star-glow" x="-300%" y="-300%" width="700%" height="700%">
+          <feGaussianBlur stdDeviation="2.2" />
+        </filter>
+        <filter id="star-glow-big" x="-300%" y="-300%" width="700%" height="700%">
+          <feGaussianBlur stdDeviation="3.4" />
+        </filter>
+        <filter id="aurora-blur" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="7" />
+        </filter>
+        <filter id="sun-glow" x="-200%" y="-200%" width="500%" height="500%">
+          <feGaussianBlur stdDeviation="10" />
+        </filter>
+        <filter id="leaf-glow" x="-200%" y="-200%" width="500%" height="500%">
+          <feGaussianBlur stdDeviation="1.6" />
+        </filter>
+
+        <linearGradient id="aurora-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="var(--signature)" stop-opacity="0" />
+          <stop offset="50%" stop-color="var(--signature)" stop-opacity="0.85" />
+          <stop offset="100%" stop-color="var(--approved)" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="aurora-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="var(--approved)" stop-opacity="0" />
+          <stop offset="50%" stop-color="var(--approved)" stop-opacity="0.7" />
+          <stop offset="100%" stop-color="var(--progress)" stop-opacity="0" />
+        </linearGradient>
+
+        <linearGradient id="mountain-back-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="var(--mountain-back)" />
+          <stop offset="100%" stop-color="var(--mountain-back)" />
+        </linearGradient>
+        <linearGradient id="mountain-mid-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="var(--mountain-mid)" />
+          <stop offset="100%" stop-color="var(--mountain-mid)" />
+        </linearGradient>
+        <linearGradient id="mountain-front-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="var(--mountain-front)" />
+          <stop offset="100%" stop-color="var(--mountain-front)" />
+        </linearGradient>
+      </defs>
+
+      <!-- Cielo: estrellas + constelación -->
+      <g class="starfield-drift" mask="url(#sky-mask)">
+        <g id="ambient-stars"></g>
+
+        <g class="fox-constellation">
+          <g class="constellation-lines">
+            <path d="M720,160 L594,10 L630,95 L558,45 L576,130 L666,195 L720,160" />
+            <path d="M720,160 L846,10 L810,95 L882,45 L864,130 L774,195 L720,160" />
+            <path d="M666,195 L720,228 L774,195" />
+          </g>
+          <g class="constellation-stars">
+            <circle cx="720" cy="160" r="3.6" class="const-star star-major" style="--tw:0s" />
+            <circle cx="594" cy="10" r="2.6" class="const-star" style="--tw:0.4s" />
+            <circle cx="630" cy="95" r="2.2" class="const-star" style="--tw:1.1s" />
+            <circle cx="558" cy="45" r="2.6" class="const-star" style="--tw:1.8s" />
+            <circle cx="576" cy="130" r="2.2" class="const-star" style="--tw:0.7s" />
+            <circle cx="666" cy="195" r="2.4" class="const-star" style="--tw:2.2s" />
+            <circle cx="846" cy="10" r="2.6" class="const-star" style="--tw:1.4s" />
+            <circle cx="810" cy="95" r="2.2" class="const-star" style="--tw:0.2s" />
+            <circle cx="882" cy="45" r="2.6" class="const-star" style="--tw:2.6s" />
+            <circle cx="864" cy="130" r="2.2" class="const-star" style="--tw:1.6s" />
+            <circle cx="774" cy="195" r="2.4" class="const-star" style="--tw:0.9s" />
+            <circle cx="720" cy="228" r="2.2" class="const-star" style="--tw:2.0s" />
+            <circle cx="688.5" cy="130" r="2.8" class="const-star star-eye" style="--tw:0.5s" />
+            <circle cx="751.5" cy="130" r="2.8" class="const-star star-eye" style="--tw:1.3s" />
+          </g>
+          <text x="720" y="-8" class="constellation-label">VULPECULA</text>
+        </g>
+      </g>
+
+      <!-- Aurora: tu historial de promedios, hecho de luz -->
+      <g id="aurora-layer" class="aurora-layer"></g>
+
+      <!-- Sol / luna: posición real según la hora -->
+      <g id="celestial-body"></g>
+
+      <!-- Cordillera: capas decorativas + tu trayectoria real al frente -->
+      <path class="mountain-layer mountain-back" fill="url(#mountain-back-grad)" d="M0,780 C200,720 300,760 480,730 C650,700 750,750 900,720 C1080,690 1200,740 1440,710 L1440,900 L0,900 Z" />
+      <path class="mountain-layer mountain-mid" fill="url(#mountain-mid-grad)" d="M0,820 C180,770 320,800 500,770 C680,740 800,790 1000,760 C1180,730 1300,780 1440,750 L1440,900 L0,900 Z" />
+      <path id="mountain-front-projected" class="mountain-layer mountain-front-projected" fill="url(#mountain-front-grad)" d="" />
+      <path id="mountain-front-real" class="mountain-layer mountain-front-real" fill="url(#mountain-front-grad)" d="" />
+      <path id="mountain-ridge-line" class="mountain-ridge-line" d="" />
+
+      <!-- Árbol de progreso: crece con tu % real de créditos aprobados -->
+      <g id="progress-tree"></g>
+    </svg>
+  </div>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 30 L10 12 L14 22 L6 16 L8 26 L18 34 Z" />
+            <path d="M24 30 L38 12 L34 22 L42 16 L40 26 L30 34 Z" />
+            <path d="M18 34 Q24 40 30 34 Q26 38 22 38 Q18 38 18 34 Z" />
+            <circle cx="20.5" cy="26" r="1.4" fill="currentColor" stroke="none" />
+            <circle cx="27.5" cy="26" r="1.4" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
+        <div class="brand-text">
+          <span class="brand-title">FOX</span>
+          <span class="brand-sub">Ingeniería de Sistemas</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="header-student">
+          <span class="student-name" id="student-name">Luis Mario</span>
+          <span class="student-id">CC 1037470188</span>
+        </div>
+        <button class="icon-btn" id="open-profile-btn" title="Tarjeta de perfil" aria-label="Ver tarjeta de perfil">🪪</button>
+        <button class="icon-btn" id="theme-toggle" title="Cambiar tema" aria-label="Cambiar tema">☀️</button>
+        <button class="icon-btn" id="open-editor-btn" title="Editar mis datos" aria-label="Editar mis datos">⚙️</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ SALUDO ============ -->
+    <section class="greeting-bar">
+      <div class="greeting-inner">
+        <span class="greeting-fox" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 30 L10 12 L14 22 L6 16 L8 26 L18 34 Z" />
+            <path d="M24 30 L38 12 L34 22 L42 16 L40 26 L30 34 Z" />
+            <path d="M18 34 Q24 40 30 34 Q26 38 22 38 Q18 38 18 34 Z" />
+            <circle cx="20.5" cy="26" r="1.4" fill="currentColor" stroke="none" />
+            <circle cx="27.5" cy="26" r="1.4" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
+        <span id="greeting-text" class="greeting-text">Hola.</span>
+      </div>
+    </section>
+
+    <!-- ============ HERO / RESUMEN ============ -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-left">
+          <p class="eyebrow">Certificado académico · 2026</p>
+          <h1><span id="hero-approved">104</span> créditos en firme.<br><span id="hero-remaining">66</span> por delante.</h1>
+          <p class="hero-desc">
+            Este es el estado real de tu carrera: lo que ya quedó sellado en tu certificado,
+            lo que estás cursando ahora mismo, y el camino exacto que te falta para llegar a
+            <strong>Ingeniero de Sistemas</strong>.
+          </p>
+          <div class="hero-mini-stats">
+            <div class="mini-stat">
+              <span class="mini-stat-value" id="stat-avg">4.01</span>
+              <span class="mini-stat-label">Promedio acumulado</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-value"><span id="stat-inprogress-count">6</span></span>
+              <span class="mini-stat-label">Materias en curso</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-value"><span id="stat-pending-count">12</span></span>
+              <span class="mini-stat-label">Materias pendientes</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-value">~<span id="stat-semesters">4</span></span>
+              <span class="mini-stat-label">Semestres estimados</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="progress-gauge">
+            <svg viewBox="0 0 200 200" class="progress-svg">
+              <circle cx="100" cy="100" r="84" class="progress-ring-bg" />
+              <circle cx="100" cy="100" r="84" class="progress-ring-fg" id="progress-ring-fg" />
+            </svg>
+            <div class="progress-center">
+              <span class="progress-pct" id="stat-pct">61.2%</span>
+              <span class="progress-caption"><span id="stat-approved">104</span> / <span id="stat-total">170</span> créd.</span>
+            </div>
+          </div>
+          <div class="gauge-legend">
+            <span><i class="dot dot-approved"></i>Aprobado</span>
+            <span><i class="dot dot-progress"></i>En curso</span>
+            <span><i class="dot dot-pending"></i>Pendiente</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CIRCUITO DE PROGRESO ============ -->
+    <section class="circuit-section" aria-label="Línea de tiempo de la carrera">
+      <div class="circuit-wrap">
+        <div class="circuit-rail" id="circuit-rail"></div>
+      </div>
+    </section>
+
+    <!-- ============ LOGROS ============ -->
+    <section class="content-section achievements-section">
+      <div class="section-heading">
+        <div class="section-heading-row">
+          <h2>Logros</h2>
+          <span class="pill pill-credits" id="achievements-count">0 / 8</span>
+        </div>
+        <p>Insignias que se desbloquean solas según tu progreso real. Hay una escondida. 🦊</p>
+      </div>
+      <div class="badge-grid" id="achievements-grid"></div>
+    </section>
+
+    <!-- ============ ANALÍTICA ============ -->
+    <section class="content-section" id="section-analytics">
+      <div class="section-heading">
+        <h2>Analítica</h2>
+        <p>Cómo se ve tu rendimiento cuando lo miras desde arriba.</p>
+      </div>
+
+      <div class="analytics-grid">
+        <div class="analytics-card wide">
+          <h4>Tendencia de promedio</h4>
+          <div class="chart-container" id="chart-trend"></div>
+          <div class="chart-legend">
+            <span><i class="legend-line real"></i>Real</span>
+            <span><i class="legend-line projected"></i>Proyectado</span>
+          </div>
+        </div>
+
+        <div class="analytics-card">
+          <h4>Fortalezas por área</h4>
+          <div class="chart-container" id="chart-strengths"></div>
+        </div>
+
+        <div class="analytics-card">
+          <h4>Distribución de notas</h4>
+          <div class="chart-container" id="chart-distribution"></div>
+        </div>
+
+        <div class="analytics-card projection-card">
+          <h4>Proyección de graduación</h4>
+          <div class="projection-value" id="projection-value">4.01</div>
+          <p class="projection-caption" id="projection-caption">Promedio final estimado.</p>
+          <p class="projection-grad" id="projection-grad"></p>
+          <div class="scenario-buttons">
+            <button class="scenario-btn" data-scenario="conservador">Conservador</button>
+            <button class="scenario-btn active" data-scenario="realista">Realista</button>
+            <button class="scenario-btn" data-scenario="optimista">Optimista</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BUSCADOR ============ -->
+    <section class="toolbar">
+      <div class="toolbar-inner">
+        <div class="search-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="search-input" placeholder="Buscar materia por nombre o código (ej. Bases de Datos, IS045...)" />
+        </div>
+        <button class="toggle-btn" id="toggle-all">Expandir todo</button>
+      </div>
+      <p id="no-results" class="empty-msg" hidden>No encontré ninguna materia con ese nombre o código.</p>
+    </section>
+
+    <!-- ============ EN CURSO ============ -->
+    <section class="content-section" id="section-inprogress">
+      <div class="section-heading">
+        <h2>Cursando ahora — periodo 2026-02</h2>
+        <p>Lo que tienes activo este semestre.</p>
+      </div>
+      <div class="course-grid" id="inprogress-grid"></div>
+    </section>
+
+    <!-- ============ SIMULADOR DE NOTAS ============ -->
+    <section class="content-section" id="section-simulator">
+      <div class="section-heading">
+        <h2>Simulador de promedio</h2>
+        <p>Mueve las barras con notas hipotéticas y mira cómo cambiaría tu acumulado — usa el mismo cálculo que tu certificado (promedio de promedios de periodo).</p>
+      </div>
+
+      <div class="simulator-card">
+        <p class="empty-msg" id="simulator-empty" hidden>No tienes materias en curso ahora mismo. Actívalas desde el panel de edición ⚙️ para usar el simulador.</p>
+        <div class="simulator-inputs" id="simulator-inputs"></div>
+
+        <div class="simulator-results" id="simulator-results">
+          <div class="sim-result">
+            <span class="sim-result-label">Promedio proyectado del periodo</span>
+            <span class="sim-result-value mono" id="sim-period-avg">4.00</span>
+          </div>
+          <div class="sim-result">
+            <span class="sim-result-label">Acumulado proyectado</span>
+            <span class="sim-result-value mono" id="sim-acc-avg">4.00</span>
+          </div>
+          <div class="sim-result">
+            <span class="sim-result-label">Cambio vs. tu acumulado actual</span>
+            <span class="sim-result-value mono" id="sim-diff">+0.00</span>
+          </div>
+        </div>
+
+        <div class="simulator-target" id="simulator-target">
+          <label for="sim-target-input">¿Qué acumulado quieres tener al cerrar este periodo?</label>
+          <input type="number" id="sim-target-input" min="0" max="5" step="0.01" placeholder="ej. 4.10" />
+          <p class="sim-target-result" id="sim-target-result"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ APROBADAS (por periodo) ============ -->
+    <section class="content-section" id="section-completed">
+      <div class="section-heading">
+        <h2>Historial académico</h2>
+        <p>Seis periodos cerrados, materia por materia, tal como quedaron certificados.</p>
+      </div>
+      <div class="term-list" id="completed-terms"></div>
+    </section>
+
+    <!-- ============ CENTRO DE RECURSOS ============ -->
+    <section class="content-section" id="section-resources">
+      <div class="section-heading">
+        <h2>Centro de recursos</h2>
+        <p>Material gratuito y confiable, elegido según las materias que tienes activas o por delante.</p>
+      </div>
+      <div class="resources-grid" id="resources-grid"></div>
+    </section>
+
+    <!-- ============ RUTA PENDIENTE ============ -->
+    <section class="content-section" id="section-pending">
+      <div class="section-heading">
+        <h2>Lo que falta</h2>
+        <p>Organizado por nivel sugerido del pénsum, del 7 al 10.</p>
+      </div>
+      <div class="roadmap" id="pending-roadmap"></div>
+    </section>
+
+    <!-- ============ RADAR DE CARRERA ============ -->
+    <section class="content-section" id="section-career">
+      <div class="section-heading">
+        <h2>🧭 Radar de carrera</h2>
+        <p>Preparación real para lo que viene después del pénsum — basado en tu Reglamento Estudiantil y tus datos actuales.</p>
+      </div>
+
+      <div class="career-grid">
+        <div class="career-card" id="career-saberpro">
+          <div class="career-card-head"><span class="career-icon">🎯</span><h4>Saber Pro</h4></div>
+          <p class="career-desc" id="saberpro-desc">Cargando...</p>
+          <div class="career-progress-bar"><div class="career-progress-fill" id="saberpro-fill"></div></div>
+          <a href="https://www.icfes.gov.co/evaluaciones-icfes/cronograma-de-evaluaciones/cronograma-examen-saber-pro/" target="_blank" rel="noopener" class="career-link">Cronograma oficial ICFES ↗</a>
+        </div>
+
+        <div class="career-card" id="career-practica">
+          <div class="career-card-head"><span class="career-icon">🎓</span><h4>Práctica Profesional</h4></div>
+          <p class="career-desc" id="practica-desc">Cargando...</p>
+          <p class="career-note">📋 Recuerda: necesitas afiliación vigente a EPS durante toda la práctica (requisito del reglamento).</p>
+        </div>
+
+        <div class="career-card wide" id="career-roles">
+          <div class="career-card-head"><span class="career-icon">💼</span><h4>Con lo que ya sabes, podrías aplicar a...</h4></div>
+          <div class="role-chips" id="role-chips"></div>
+        </div>
+
+        <div class="career-card wide" id="career-boards">
+          <div class="career-card-head"><span class="career-icon">🔍</span><h4>Radar de bolsas de empleo</h4></div>
+          <div class="board-links" id="board-links"></div>
+        </div>
+
+        <div class="career-card wide" id="career-checklist">
+          <div class="career-card-head"><span class="career-icon">✅</span><h4>Listo para prácticas / primer empleo</h4></div>
+          <div class="checklist-items" id="checklist-items"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>FOX · hecho a la medida para Luis Mario Medrano Páez · Ingeniería de Sistemas · Universidad Católica Luis Amigó, Apartadó</p>
+    <p class="footer-fine">Datos según certificado de calificaciones oficial y el Reglamento Estudiantil UCLA. Tus notas y logros se guardan solo en este navegador. © <span id="year-now"></span></p>
+    <button class="print-link-btn" id="print-page-btn">🖨️ Imprimir / guardar como PDF</button>
+  </footer>
+
+  <!-- ============ PANEL DE EDICIÓN ============ -->
+  <div class="editor-overlay" id="editor-overlay"></div>
+  <aside class="editor-drawer" id="editor-drawer" aria-label="Panel de edición">
+    <div class="editor-header">
+      <h3>🛠️ Panel de control</h3>
+      <button class="icon-btn" id="close-editor-btn" aria-label="Cerrar panel">✕</button>
+    </div>
+
+    <div class="editor-tabs">
+      <button class="editor-tab-btn active" data-tab="courses">Materias actuales</button>
+      <button class="editor-tab-btn" data-tab="close">Cerrar periodo</button>
+      <button class="editor-tab-btn" data-tab="backup">Copia de seguridad</button>
+    </div>
+
+    <div class="editor-tab-panel active" id="tab-courses">
+      <p class="editor-tab-desc">Marca las materias que estás viendo este periodo. Las bloqueadas 🔒 necesitan un prerrequisito primero.</p>
+      <div class="editor-course-list" id="editor-course-list"></div>
+      <button class="primary-btn" id="save-courses-btn">Guardar selección</button>
+      <div class="editor-elective-pools" id="editor-elective-pools"></div>
+    </div>
+
+    <div class="editor-tab-panel" id="tab-close">
+      <p class="editor-tab-desc">Cuando termines el semestre, pon la nota final de cada materia activa y ciérralo. Si alguna queda por debajo de 3.0, se marca como reprobada y vuelve a pendientes para repetirla — todo lo demás se recalcula solo.</p>
+      <label class="editor-label" for="close-term-label">Nombre del periodo</label>
+      <input type="text" id="close-term-label" class="editor-text-input" placeholder="ej. 2026-02" />
+      <div class="editor-close-list" id="editor-close-list"></div>
+      <button class="primary-btn" id="close-term-btn">Revisar y cerrar periodo</button>
+
+      <div class="close-preview" id="close-preview" hidden>
+        <div class="close-preview-summary" id="close-preview-summary"></div>
+        <div class="close-preview-actions">
+          <button class="secondary-btn" id="close-preview-cancel">Cancelar</button>
+          <button class="primary-btn" id="close-preview-confirm">Confirmar cierre</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="editor-tab-panel" id="tab-backup">
+      <p class="editor-tab-desc">Tus datos viven solo en este navegador. Descarga una copia de vez en cuando para no perder nada.</p>
+      <button class="secondary-btn" id="export-backup-btn">📦 Descargar copia (JSON)</button>
+      <label class="secondary-btn file-btn">
+        📥 Restaurar desde archivo
+        <input type="file" id="import-backup-input" accept="application/json" hidden />
+      </label>
+      <hr class="editor-divider" />
+      <div id="pin-section"></div>
+      <hr class="editor-divider" />
+      <button class="danger-btn" id="reset-data-btn">↩️ Restaurar datos originales del certificado</button>
+    </div>
+  </aside>
+
+  <!-- ============ TARJETA DE PERFIL ============ -->
+  <div class="editor-overlay" id="profile-overlay"></div>
+  <div class="profile-modal" id="profile-modal" role="dialog" aria-label="Tarjeta de perfil">
+    <div class="profile-card" id="profile-card">
+      <button class="icon-btn profile-close" id="close-profile-btn" aria-label="Cerrar tarjeta de perfil">✕</button>
+      <div class="profile-header">
+        <span class="profile-fox" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 30 L10 12 L14 22 L6 16 L8 26 L18 34 Z" />
+            <path d="M24 30 L38 12 L34 22 L42 16 L40 26 L30 34 Z" />
+            <path d="M18 34 Q24 40 30 34 Q26 38 22 38 Q18 38 18 34 Z" />
+            <circle cx="20.5" cy="26" r="1.4" fill="currentColor" stroke="none" />
+            <circle cx="27.5" cy="26" r="1.4" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
+        <div>
+          <h2>Luis Mario Medrano Páez</h2>
+          <p>Ingeniería de Sistemas · Universidad Católica Luis Amigó, Apartadó</p>
+        </div>
+      </div>
+
+      <div class="profile-stats">
+        <div class="profile-stat"><span class="profile-stat-value" id="profile-pct">61.2%</span><small>Progreso</small></div>
+        <div class="profile-stat"><span class="profile-stat-value" id="profile-gpa">4.01</span><small>Promedio</small></div>
+        <div class="profile-stat"><span class="profile-stat-value" id="profile-credits">104/170</span><small>Créditos</small></div>
+        <div class="profile-stat"><span class="profile-stat-value" id="profile-grad">2028-01</span><small>Grado est.</small></div>
+      </div>
+
+      <h4>Habilidades técnicas</h4>
+      <div class="skills-chips" id="profile-skills"></div>
+
+      <button class="primary-btn" id="print-profile-btn">🖨️ Descargar / imprimir tarjeta</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
