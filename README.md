@@ -71,7 +71,7 @@ Tus notas, logros y datos editados viven solo en el `localStorage` de cada naveg
 
 ## Actualizar tus datos cada semestre (sin tocar código)
 
-1. Abre el panel ⚙️ en la esquina superior derecha.
+1. Abre el panel  en la esquina superior derecha.
 2. En **"Materias actuales"**, marca las materias que vas a ver este periodo → Guardar selección.
 3. Cuando termine el semestre, ve a **"Cerrar periodo"**, pon la nota final de cada una y el nombre del periodo (ya viene sugerido) → **Revisar y cerrar periodo**.
 4. Revisa el resumen que aparece (qué apruebas, qué reprobarías) → **Confirmar cierre**.
