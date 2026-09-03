@@ -1,8 +1,4 @@
-/* ============================================================
-   FOX — Tablero académico de Luis Mario Medrano Páez
-   Ingeniería de Sistemas · Universidad Católica Luis Amigó
-   v3 — con panel de edición, analítica y modo claro/oscuro
-   ============================================================ */
+
 
 const STUDENT = {
   name: "Luis Mario Medrano Páez",
@@ -14,8 +10,7 @@ const STUDENT = {
   nickname: "Fox",
 };
 
-// ---------- DATOS ORIGINALES (certificado oficial + pénsum) — nunca se mutan ----------
-// Sirven como semilla y como "restaurar datos originales".
+
 
 const DEFAULT_COMPLETED_TERMS = [
   {
@@ -220,40 +215,40 @@ function resetToDefaults() {
 // ---------- CENTRO DE RECURSOS ----------
 
 const RESOURCE_CATEGORIES = {
-  software: { label: "Ingeniería de Software", icon: "🧩", links: [
+  software: { label: "Ingeniería de Software", icon: "", links: [
     { title: "Martin Fowler — patrones y buenas prácticas", url: "https://martinfowler.com/" },
     { title: "Refactoring Guru — patrones de diseño explicados", url: "https://refactoring.guru/" },
   ]},
-  arquitectura: { label: "Arquitectura de Sistemas", icon: "🏛️", links: [
+  arquitectura: { label: "Arquitectura de Sistemas", icon: "", links: [
     { title: "The Twelve-Factor App", url: "https://12factor.net/" },
     { title: "Refactoring Guru — patrones arquitectónicos", url: "https://refactoring.guru/design-patterns" },
   ]},
-  gerencia: { label: "Gerencia y Gestión de Proyectos", icon: "📋", links: [
+  gerencia: { label: "Gerencia y Gestión de Proyectos", icon: "", links: [
     { title: "Project Management Institute", url: "https://www.pmi.org/" },
     { title: "Cursos gratuitos de gestión — Coursera", url: "https://www.coursera.org/browse/business/leadership-and-management" },
   ]},
-  operaciones: { label: "Investigación de Operaciones y Estadística", icon: "📊", links: [
+  operaciones: { label: "Investigación de Operaciones y Estadística", icon: "", links: [
     { title: "Khan Academy — Estadística y probabilidad", url: "https://es.khanacademy.org/math/statistics-probability" },
     { title: "Khan Academy — Álgebra lineal", url: "https://es.khanacademy.org/math/linear-algebra" },
   ]},
-  auditoria: { label: "Auditoría y Seguridad de la Información", icon: "🛡️", links: [
+  auditoria: { label: "Auditoría y Seguridad de la Información", icon: "", links: [
     { title: "OWASP — fundamentos de seguridad", url: "https://owasp.org/" },
   ]},
-  testing: { label: "Verificación y Validación de Software", icon: "✅", links: [
+  testing: { label: "Verificación y Validación de Software", icon: "", links: [
     { title: "freeCodeCamp — testing y QA", url: "https://www.freecodecamp.org/" },
   ]},
-  simulacion: { label: "Modelación y Simulación", icon: "🧮", links: [
+  simulacion: { label: "Modelación y Simulación", icon: "", links: [
     { title: "Wolfram MathWorld", url: "https://mathworld.wolfram.com/" },
     { title: "Khan Academy — Cálculo", url: "https://es.khanacademy.org/math/calculus-1" },
   ]},
-  humanas: { label: "Ética, Humanidades y Desarrollo", icon: "🌱", links: [
+  humanas: { label: "Ética, Humanidades y Desarrollo", icon: "", links: [
     { title: "edX — cursos de ética y sociedad", url: "https://www.edx.org/" },
   ]},
-  practica: { label: "Práctica Profesional y Portafolio", icon: "💼", links: [
+  practica: { label: "Práctica Profesional y Portafolio", icon: "", links: [
     { title: "GitHub — arma tu portafolio de proyectos", url: "https://github.com/" },
     { title: "LinkedIn Learning", url: "https://www.linkedin.com/learning/" },
   ]},
-  general: { label: "Fundamentos y Programación", icon: "💻", links: [
+  general: { label: "Fundamentos y Programación", icon: "", links: [
     { title: "freeCodeCamp", url: "https://www.freecodecamp.org/" },
     { title: "GeeksforGeeks", url: "https://www.geeksforgeeks.org/" },
   ]},
@@ -405,7 +400,7 @@ function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem(THEME_KEY, theme);
   const btn = document.getElementById("theme-toggle");
-  if (btn) btn.textContent = theme === "light" ? "🌙" : "☀️";
+  if (btn) btn.textContent = theme === "light" ? "" : "";
 }
 
 function toggleTheme() {
@@ -450,16 +445,16 @@ function buildAchievements(stats) {
   const saberProReady = stats.pct >= 75;
 
   return [
-    { id: "primer-sello", icon: "🏅", title: "Primer sello", desc: "Cerraste tu primer semestre en la universidad.", unlocked: DATA.completedTerms.length >= 1 },
-    { id: "nota-perfecta", icon: "💯", title: "Nota perfecta", desc: "Sacaste un 5.0 en al menos una materia.", unlocked: hasPerfectGrade },
-    { id: "racha-ascendente", icon: "🔥", title: "Racha ascendente", desc: `Llevas ${bestStreak} periodos seguidos con el promedio en aumento.`, unlocked: bestStreak >= 3 },
-    { id: "medio-camino", icon: "🚩", title: "Medio camino", desc: "Superaste el 50% de los créditos de la carrera.", unlocked: stats.pct >= 50 },
-    { id: "poliglota", icon: "🗣️", title: "Políglota en construcción", desc: "Aprobaste 5 niveles de inglés.", unlocked: highestEnglish >= 5 },
-    { id: "multitarea", icon: "🧠", title: "Modo multitarea", desc: "Llevas 6 materias activas al mismo tiempo.", unlocked: stats.inProgressCount >= 6 },
-    { id: "recta-final", icon: "🏁", title: "Recta final", desc: "Ya tienes materias de nivel 8 en tu radar.", unlocked: advancedLevel },
-    { id: "segunda-oportunidad", icon: "🔁", title: "Segunda oportunidad", desc: "Te vas a levantar una materia repitiéndola. Así se hace.", unlocked: hasRetake },
-    { id: "saber-pro", icon: "🎯", title: "Listo para el Saber Pro", desc: "Superaste el 75% de créditos — ya puedes inscribirte (Art. 104).", unlocked: saberProReady },
-    { id: "grado-honorifico", icon: "🎓", title: "Camino al Grado Honorífico", desc: "Promedio ≥ 4.6 y cero materias reprobadas (Art. 83). Sigue así hasta el final.", unlocked: honorEligible },
+    { id: "primer-sello", icon: "", title: "Primer sello", desc: "Cerre mi primer semestre en la universidad.", unlocked: DATA.completedTerms.length >= 1 },
+    { id: "nota-perfecta", icon: "", title: "Nota perfecta", desc: "Saque un 5.0 en al menos una materia.", unlocked: hasPerfectGrade },
+    { id: "racha-ascendente", icon: "", title: "Racha ascendente", desc: `Llevo 4 ${bestStreak} periodos seguidos con el promedio en aumento.`, unlocked: bestStreak >= 3 },
+    { id: "medio-camino", icon: "", title: "Medio camino", desc: "Supere el 50% de los créditos de la carrera.", unlocked: stats.pct >= 50 },
+    { id: "poliglota", icon: "", title: "Políglota en construcción", desc: "Aprobe 5 niveles de inglés.", unlocked: highestEnglish >= 5 },
+    { id: "multitarea", icon: "", title: "Modo multitarea", desc: "Llevo 6 materias activas al mismo tiempo.", unlocked: stats.inProgressCount >= 6 },
+    { id: "recta-final", icon: "", title: "Recta final", desc: "Ya tengo materias de nivel 8 en el radar.", unlocked: advancedLevel },
+    { id: "segunda-oportunidad", icon: "", title: "Segunda oportunidad", desc: "Te vas a levantar una materia repitiéndola. Así se hace.", unlocked: hasRetake },
+    { id: "saber-pro", icon: "", title: "Listo para el Saber Pro", desc: "Superaste el 75% de créditos — ya puedes inscribirte (Art. 104).", unlocked: saberProReady },
+    { id: "grado-honorifico", icon: "", title: "Camino al Grado Honorífico", desc: "Promedio ≥ 4.6 y cero materias reprobadas (Art. 83). Sigue así hasta el final.", unlocked: honorEligible },
   ];
 }
 
@@ -481,9 +476,7 @@ function renderAchievements(stats) {
   if (counter) counter.textContent = `${unlockedCount} / ${achievements.length}`;
 }
 
-// ============================================================
-// ANALÍTICA (gráficas SVG hechas a mano — sin librerías)
-// ============================================================
+
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -711,7 +704,7 @@ function renderProjection() {
   document.getElementById("projection-caption").textContent =
     `Estimado si mantienes un promedio de ${scenarioValue.toFixed(2)} en los ${remaining} periodos que faltan.`;
   const gradEl = document.getElementById("projection-grad");
-  if (gradEl) gradEl.textContent = gradLabel ? `📅 Periodo estimado de grado: ${gradLabel}` : "";
+  if (gradEl) gradEl.textContent = gradLabel ? ` Periodo estimado de grado: ${gradLabel}` : "";
 }
 
 function setScenario(scenario) {
@@ -721,9 +714,7 @@ function setScenario(scenario) {
   renderProjection();
 }
 
-// ============================================================
-// SIMULADOR DE NOTAS
-// ============================================================
+
 
 function renderSimulator() {
   const container = document.getElementById("simulator-inputs");
@@ -805,9 +796,7 @@ function updateSimulatorResults() {
   }
 }
 
-// ============================================================
-// RENDER PRINCIPAL (circuito, historial, en curso, roadmap)
-// ============================================================
+
 
 function renderHero(stats) {
   document.getElementById("stat-approved").textContent = stats.approvedCredits;
@@ -949,8 +938,8 @@ function onGradeEdited(e) {
   saveData();
   showToast(
     val >= 3.0
-      ? `✏️ Nota de ${code} actualizada a ${val.toFixed(1)}`
-      : `✏️ Nota de ${code} actualizada a ${val.toFixed(1)} — queda marcada como reprobada`
+      ? ` Nota de ${code} actualizada a ${val.toFixed(1)}`
+      : ` Nota de ${code} actualizada a ${val.toFixed(1)} — queda marcada como reprobada`
   );
   fullRerender();
 }
@@ -1000,7 +989,7 @@ function renderPendingRoadmap(filter = "") {
   )].sort((a, b) => a - b);
 
   if (levels.length === 0) {
-    container.innerHTML = `<p class="empty-msg">🎉 ¡No te queda ninguna materia pendiente por iniciar!</p>`;
+    container.innerHTML = `<p class="empty-msg"> ¡No te queda ninguna materia pendiente por iniciar!</p>`;
     return;
   }
 
@@ -1028,13 +1017,13 @@ function renderPendingRoadmap(filter = "") {
           <div class="course-card pending ${unlocked ? "" : "locked-course"} ${isPool ? "pool-card" : ""}">
             <div class="course-card-top">
               <span class="mono code-tag">${escapeHtml(c.code)}</span>
-              <span class="status-dot" title="${unlocked ? "Pendiente" : "Bloqueada"}">${unlocked ? "" : "🔒"}</span>
+              <span class="status-dot" title="${unlocked ? "Pendiente" : "Bloqueada"}">${unlocked ? "" : ""}</span>
             </div>
             <h4>${escapeHtml(c.name)}</h4>
             <div class="course-card-meta"><span>${c.credits} créditos</span><span>${escapeHtml(c.type)}</span></div>
-            ${!unlocked ? `<p class="lock-note">🔒 Requiere: ${PREREQS[c.code].map(escapeHtml).join(", ")}</p>` : ""}
-            ${isRetake ? `<p class="retake-note">🔁 Repite — última nota: ${(c.lastGrade ?? 0).toFixed(1)}</p>` : ""}
-            ${isPool ? `<p class="pool-hint">✏️ Personalízala desde el panel ⚙️ → Materias actuales</p>` : ""}
+            ${!unlocked ? `<p class="lock-note"> Requiere: ${PREREQS[c.code].map(escapeHtml).join(", ")}</p>` : ""}
+            ${isRetake ? `<p class="retake-note"> Repite — última nota: ${(c.lastGrade ?? 0).toFixed(1)}</p>` : ""}
+            ${isPool ? `<p class="pool-hint"> Personalízala desde el panel  → Materias actuales</p>` : ""}
             ${resourceLinkHtml(c.code)}
           </div>`;
         }).join("") : `<p class="empty-msg">Ya viste todas las materias de este nivel.</p>`}
@@ -1091,16 +1080,7 @@ function fullRerender() {
   renderCareerRadar();
 }
 
-// ============================================================
-// PANEL DE EDICIÓN
-// ============================================================
 
-// ============================================================
-// PIN DE ACCESO — protección ligera para el panel de edición
-// ============================================================
-// Aviso honesto: esto es una traba de privacidad casual (para que un amigo con el
-// link no toque tus datos por error), NO seguridad real — todo corre en el navegador
-// y cualquiera con herramientas de desarrollador podría saltárselo.
 
 const PIN_KEY = "fox-pin-hash";
 const PIN_SESSION_KEY = "fox-pin-unlocked";
@@ -1121,31 +1101,31 @@ function isPinUnlocked() {
 
 async function requestPinUnlock() {
   if (isPinUnlocked()) return true;
-  const entered = prompt("🔒 Ingresa tu PIN para editar tus datos:");
+  const entered = prompt(" Ingresa tu PIN para editar tus datos:");
   if (entered === null) return false;
   const hash = await hashPin(entered);
   if (hash === localStorage.getItem(PIN_KEY)) {
     sessionStorage.setItem(PIN_SESSION_KEY, "1");
     return true;
   }
-  showToast("⚠️ PIN incorrecto.");
+  showToast(" PIN incorrecto.");
   return false;
 }
 
 async function setupPin() {
   const p1 = prompt("Crea un PIN (4 o más caracteres):");
   if (!p1 || p1.length < 4) {
-    if (p1 !== null) showToast("⚠️ El PIN debe tener al menos 4 caracteres.");
+    if (p1 !== null) showToast(" El PIN debe tener al menos 4 caracteres.");
     return;
   }
   const p2 = prompt("Confírmalo de nuevo:");
   if (p1 !== p2) {
-    showToast("⚠️ No coinciden. Intenta de nuevo.");
+    showToast(" No coinciden. Intenta de nuevo.");
     return;
   }
   localStorage.setItem(PIN_KEY, await hashPin(p1));
   sessionStorage.setItem(PIN_SESSION_KEY, "1");
-  showToast("🔒 PIN configurado. Se te pedirá cada vez que abras el panel en una sesión nueva.");
+  showToast(" PIN configurado. Se te pedirá cada vez que abras el panel en una sesión nueva.");
   renderPinSection();
 }
 
@@ -1160,7 +1140,7 @@ async function removePin() {
   if (!ok) return;
   localStorage.removeItem(PIN_KEY);
   sessionStorage.removeItem(PIN_SESSION_KEY);
-  showToast("🔓 PIN eliminado. El panel queda libre.");
+  showToast(" PIN eliminado. El panel queda libre.");
   renderPinSection();
 }
 
@@ -1169,13 +1149,13 @@ function renderPinSection() {
   if (!container) return;
   container.innerHTML = hasPinSet()
     ? `
-      <p class="editor-tab-desc">🔒 Tienes un PIN activo — protege que alguien con el link edite tus datos por error. No es seguridad fuerte, es solo una traba de privacidad.</p>
-      <button class="secondary-btn" id="change-pin-btn">🔄 Cambiar PIN</button>
-      <button class="danger-btn" id="remove-pin-btn">🔓 Quitar PIN</button>
+      <p class="editor-tab-desc"> Tienes un PIN activo — protege que alguien con el link edite tus datos por error. No es seguridad fuerte, es solo una traba de privacidad.</p>
+      <button class="secondary-btn" id="change-pin-btn"> Cambiar PIN</button>
+      <button class="danger-btn" id="remove-pin-btn"> Quitar PIN</button>
     `
     : `
       <p class="editor-tab-desc">Sin PIN, cualquiera con tu link puede abrir este panel y editar tus datos. Si vas a compartir el link, te recomiendo poner uno.</p>
-      <button class="secondary-btn" id="setup-pin-btn">🔒 Configurar PIN de acceso</button>
+      <button class="secondary-btn" id="setup-pin-btn"> Configurar PIN de acceso</button>
     `;
 
   document.getElementById("setup-pin-btn")?.addEventListener("click", setupPin);
@@ -1214,13 +1194,13 @@ function renderEditorTabCourses() {
   );
 
   if (available.length === 0) {
-    container.innerHTML = `<p class="empty-msg">🎉 No te quedan materias por cursar.</p>`;
+    container.innerHTML = `<p class="empty-msg"> No te quedan materias por cursar.</p>`;
   } else {
     container.innerHTML = available.map((c) => {
       const unlocked = isCourseUnlocked(c.code);
-      const retakeTag = (c.attempts || 0) > 0 ? ` <span class="retake-inline">🔁 repite</span>` : "";
+      const retakeTag = (c.attempts || 0) > 0 ? ` <span class="retake-inline"> repite</span>` : "";
       const removeBtn = c.fromPool && c.status === "pending"
-        ? `<button type="button" class="elective-remove-btn" data-code="${escapeHtml(c.code)}" title="Quitar esta electiva">🗑️</button>`
+        ? `<button type="button" class="elective-remove-btn" data-code="${escapeHtml(c.code)}" title="Quitar esta electiva"></button>`
         : "";
       return `
       <label class="editor-checkbox-row ${unlocked ? "" : "disabled-row"}">
@@ -1236,7 +1216,7 @@ function renderEditorTabCourses() {
       btn.addEventListener("click", (e) => {
         e.preventDefault();
         removeCustomElective(btn.dataset.code);
-        showToast("🗑️ Electiva quitada, créditos devueltos al banco.");
+        showToast(" Electiva quitada, créditos devueltos al banco.");
         renderEditorTabCourses();
       });
     });
@@ -1251,7 +1231,7 @@ function renderEditorTabCourses() {
   }
   poolsContainer.innerHTML = pools.map((pool) => `
     <div class="elective-pool-card">
-      <p class="elective-pool-title">🎯 ${escapeHtml(pool.name)} — quedan <strong>${pool.credits} créd.</strong> por asignar</p>
+      <p class="elective-pool-title"> ${escapeHtml(pool.name)} — quedan <strong>${pool.credits} créd.</strong> por asignar</p>
       <p class="elective-pool-desc">Escribe el nombre real de la electiva que estás viendo (o vas a ver) y sus créditos.</p>
       <div class="elective-pool-form">
         <input type="text" class="editor-text-input elective-name-input" data-pool="${escapeHtml(pool.code)}" placeholder="ej. Desarrollo de Videojuegos" />
@@ -1268,10 +1248,10 @@ function renderEditorTabCourses() {
       const creditsInput = poolsContainer.querySelector(`.elective-credits-input[data-pool="${poolCode}"]`);
       const result = addElectiveFromPool(poolCode, nameInput.value, parseFloat(creditsInput.value));
       if (!result.ok) {
-        showToast(`⚠️ ${result.message}`);
+        showToast(` ${result.message}`);
         return;
       }
-      showToast(`✅ "${nameInput.value.trim()}" agregada. Ya puedes marcarla como materia actual.`);
+      showToast(` "${nameInput.value.trim()}" agregada. Ya puedes marcarla como materia actual.`);
       renderEditorTabCourses();
     });
   });
@@ -1285,7 +1265,7 @@ function saveCurrentCourses() {
     }
   });
   saveData();
-  showToast(`✅ Guardado — ${checked.size} materia(s) activa(s) este periodo.`);
+  showToast(` Guardado — ${checked.size} materia(s) activa(s) este periodo.`);
   fullRerender();
   renderEditorTabClose();
 }
@@ -1335,7 +1315,7 @@ function renderEditorTabClose() {
     input.addEventListener("input", () => {
       const hint = document.getElementById(`close-hint-${input.dataset.code}`);
       const val = parseFloat(input.value);
-      hint.textContent = !isNaN(val) && val < 3.0 ? "⚠️ Reprobaría" : "";
+      hint.textContent = !isNaN(val) && val < 3.0 ? " Reprobaría" : "";
     });
   });
 }
@@ -1347,11 +1327,11 @@ function reviewClosePeriod() {
 
   const label = document.getElementById("close-term-label").value.trim();
   if (!label) {
-    showToast("⚠️ Ponle un nombre al periodo, ej. 2026-02");
+    showToast(" Ponle un nombre al periodo, ej. 2026-02");
     return;
   }
   if (DATA.completedTerms.some((t) => t.term === label)) {
-    showToast("⚠️ Ya existe un periodo con ese nombre.");
+    showToast(" Ya existe un periodo con ese nombre.");
     return;
   }
 
@@ -1360,7 +1340,7 @@ function reviewClosePeriod() {
     const input = document.getElementById(`close-grade-${c.code}`);
     let g = parseFloat(input.value);
     if (isNaN(g) || g < 0 || g > 5) {
-      showToast(`⚠️ Revisa la nota de ${c.code} (debe estar entre 0.0 y 5.0)`);
+      showToast(` Revisa la nota de ${c.code} (debe estar entre 0.0 y 5.0)`);
       return;
     }
     results.push({ code: c.code, name: c.name, credits: c.credits, grade: g, passed: g >= 3.0, level: c.level, type: c.type });
@@ -1377,9 +1357,9 @@ function reviewClosePeriod() {
   const summaryEl = document.getElementById("close-preview-summary");
   summaryEl.innerHTML = `
     <p><strong>Periodo ${escapeHtml(label)}</strong> — promedio de periodo: <strong>${avg.toFixed(2)}</strong></p>
-    <p class="preview-line">✅ Aprobarías ${passedList.length} materia(s) (${passedList.reduce((s, r) => s + r.credits, 0)} créd.)</p>
-    ${recuperableList.length ? `<p class="preview-line preview-recup">🔁 Podrías pedir <strong>Recuperación Final</strong> en ${recuperableList.length} materia(s): ${recuperableList.map((r) => `${escapeHtml(r.name)} (${r.grade.toFixed(1)})`).join(", ")} — si asististe al 80% de clases y la solicitas dentro de los 3 días hábiles, la nota quedaría en 3.0 (Art. 97 del reglamento). Aquí se registra como pendiente; ajusta la nota a mano si la apruebas.</p>` : ""}
-    ${directFailList.length ? `<p class="preview-line preview-warn">⚠️ Reprobarías directo ${directFailList.length} materia(s): ${directFailList.map((r) => escapeHtml(r.name)).join(", ")} — quedarán pendientes para repetir${directFailList.some((r) => !isEligibleForRecuperacion(r.code)) ? " (sin opción de recuperación por su tipo de curso)" : ""}.</p>` : ""}
+    <p class="preview-line"> Aprobarías ${passedList.length} materia(s) (${passedList.reduce((s, r) => s + r.credits, 0)} créd.)</p>
+    ${recuperableList.length ? `<p class="preview-line preview-recup"> Podrías pedir <strong>Recuperación Final</strong> en ${recuperableList.length} materia(s): ${recuperableList.map((r) => `${escapeHtml(r.name)} (${r.grade.toFixed(1)})`).join(", ")} — si asististe al 80% de clases y la solicitas dentro de los 3 días hábiles, la nota quedaría en 3.0 (Art. 97 del reglamento). Aquí se registra como pendiente; ajusta la nota a mano si la apruebas.</p>` : ""}
+    ${directFailList.length ? `<p class="preview-line preview-warn"> Reprobarías directo ${directFailList.length} materia(s): ${directFailList.map((r) => escapeHtml(r.name)).join(", ")} — quedarán pendientes para repetir${directFailList.some((r) => !isEligibleForRecuperacion(r.code)) ? " (sin opción de recuperación por su tipo de curso)" : ""}.</p>` : ""}
     <p class="preview-line">Esto es definitivo salvo que lo deshagas justo después, o restaures el certificado original.</p>
   `;
 
@@ -1423,7 +1403,7 @@ function confirmClosePeriod() {
 
   const newTerm = DATA.completedTerms[DATA.completedTerms.length - 1];
   const failMsg = failedResults.length ? ` (${failedResults.length} para repetir)` : "";
-  showToast(`🎉 ¡Periodo ${label} cerrado! Promedio: ${newTerm.avg.toFixed(2)}${failMsg}`, "Deshacer", undoLastClose);
+  showToast(` ¡Periodo ${label} cerrado! Promedio: ${newTerm.avg.toFixed(2)}${failMsg}`, "Deshacer", undoLastClose);
 
   pendingClose = null;
   fullRerender();
@@ -1440,14 +1420,14 @@ function undoLastClose() {
   fullRerender();
   renderEditorTabCourses();
   renderEditorTabClose();
-  showToast("↩️ Cierre de periodo deshecho.");
+  showToast(" Cierre de periodo deshecho.");
 }
 
 function celebrateIfMilestone() {
   const stats = computeStats();
-  if (stats.pct >= 100) showToast("🏆 ¡100%! Ya completaste todos los créditos. ¡Felicidades!");
-  else if (stats.pct >= 90) showToast("🚀 ¡90%! La recta final está aquí.");
-  else if (stats.pct >= 75) showToast("🌟 ¡75% del camino recorrido!");
+  if (stats.pct >= 100) showToast(" ¡100%! Ya completaste todos los créditos. ¡Felicidades!");
+  else if (stats.pct >= 90) showToast(" ¡90%! La recta final está aquí.");
+  else if (stats.pct >= 75) showToast(" ¡75% del camino recorrido!");
 }
 
 // --- Tab: copia de seguridad ---
@@ -1462,7 +1442,7 @@ function exportBackup() {
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
-  showToast("📦 Copia de seguridad descargada.");
+  showToast(" Copia de seguridad descargada.");
 }
 
 function importBackup(file) {
@@ -1478,12 +1458,12 @@ function importBackup(file) {
       recomputeChain();
       saveData();
       if (parsed.notes) localStorage.setItem(NOTES_KEY, JSON.stringify(parsed.notes));
-      showToast("✅ Copia de seguridad restaurada.");
+      showToast(" Copia de seguridad restaurada.");
       fullRerender();
       renderEditorTabCourses();
       renderEditorTabClose();
     } catch {
-      showToast("⚠️ Ese archivo no parece una copia válida de FOX.");
+      showToast(" Ese archivo no parece una copia válida de FOX.");
     }
   };
   reader.readAsText(file);
@@ -1492,7 +1472,7 @@ function importBackup(file) {
 function confirmResetData() {
   if (!confirm("¿Seguro que quieres restaurar los datos originales del certificado? Esto borra tus ediciones y periodos cerrados manualmente.")) return;
   resetToDefaults();
-  showToast("↩️ Datos restaurados al certificado original.");
+  showToast(" Datos restaurados al certificado original.");
   fullRerender();
   renderEditorTabCourses();
   renderEditorTabClose();
@@ -1536,7 +1516,7 @@ function renderProfileCard() {
 }
 
 // ============================================================
-// RADAR DE CARRERA — basado en el Reglamento Estudiantil UCLA
+// RADAR DE CARRERA — basado en el Reglamento Estudiantil FUNLAM
 // ============================================================
 
 const ROLE_DEFINITIONS = [
@@ -1592,7 +1572,7 @@ function renderSaberPro(stats) {
   fill.style.width = `${Math.min(100, (stats.pct / 75) * 100).toFixed(1)}%`;
 
   if (stats.pct >= 75) {
-    desc.innerHTML = `✅ Ya superaste el <strong>75% de créditos</strong> — cumples el requisito del ICFES para inscribirte. Es obligatorio para graduarte (Art. 104c del reglamento). Revisa el próximo cronograma.`;
+    desc.innerHTML = ` Ya superaste el <strong>75% de créditos</strong> — cumples el requisito del ICFES para inscribirte. Es obligatorio para graduarte (Art. 104c del reglamento). Revisa el próximo cronograma.`;
   } else {
     const remaining = Math.ceil(((stats.total * 0.75) - stats.approvedCredits) * 10) / 10;
     desc.innerHTML = `Te faltan <strong>${remaining} créditos</strong> para llegar al 75% que exige el ICFES para poder inscribirte. Es un requisito de grado obligatorio (Art. 104c).`;
@@ -1604,7 +1584,7 @@ function renderPractica() {
   if (!desc) return;
   const practica = DATA.pendingCourses.find((c) => c.code === "ISPP01");
   if (!practica) {
-    desc.innerHTML = `✅ Ya cursaste o estás cursando tu Práctica Profesional.`;
+    desc.innerHTML = ` Ya cursaste o estás cursando tu Práctica Profesional.`;
     return;
   }
   const periods = estimatePeriodsUntilLevel(10);
@@ -1630,7 +1610,7 @@ function renderRoleSuggestions() {
 
   container.innerHTML = scored.map((r) => {
     const ready = r.matched === r.needs.length;
-    return `<span class="role-chip ${ready ? "role-ready" : ""}" title="${r.matched}/${r.needs.length} habilidades">${ready ? "✅" : "🔹"} ${escapeHtml(r.role)}</span>`;
+    return `<span class="role-chip ${ready ? "role-ready" : ""}" title="${r.matched}/${r.needs.length} habilidades">${ready ? "" : ""} ${escapeHtml(r.role)}</span>`;
   }).join("");
 }
 
@@ -1687,9 +1667,7 @@ function closeProfileModal() {
   deactivateFocusTrap();
 }
 
-// ============================================================
-// ACCESIBILIDAD: trampa de foco para drawer / modal
-// ============================================================
+
 
 let focusTrapHandler = null;
 let lastFocusedBeforeTrap = null;
@@ -2003,7 +1981,7 @@ function init() {
   }
 
   console.log(
-    "%c🦊 FOX %c— tablero académico de Ingeniería de Sistemas.",
+    "%c FOX %c— tablero académico de Ingeniería de Sistemas.",
     "color:#4CC9F0;font-weight:bold;font-size:14px;",
     "color:#A8B0C4;font-size:12px;"
   );
