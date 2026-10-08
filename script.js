@@ -12,6 +12,7 @@ const STUDENT = {
 
 
 
+
 const DEFAULT_COMPLETED_TERMS = [
   {
     term: "2023-02", level: 1, avg: 3.68, accAvg: 3.68, credits: 16, accCredits: 16,
@@ -420,63 +421,9 @@ function renderGreeting() {
   el.textContent = `${timeGreeting}, ${STUDENT.nickname}.`;
 }
 
-// ---------- LOGROS ----------
-
-function buildAchievements(stats) {
-  const completed = allCompletedCourses();
-  const periodAvgs = DATA.completedTerms.map((t) => t.avg);
-
-  let bestStreak = periodAvgs.length ? 1 : 0, curStreak = 1;
-  for (let i = 1; i < periodAvgs.length; i++) {
-    if (periodAvgs[i] > periodAvgs[i - 1]) {
-      curStreak++;
-      bestStreak = Math.max(bestStreak, curStreak);
-    } else {
-      curStreak = 1;
-    }
-  }
-
-  const hasPerfectGrade = completed.some((c) => c.grade >= 5.0);
-  const highestEnglish = completed.filter((c) => c.name.toLowerCase().startsWith("inglés")).length;
-  const advancedLevel = DATA.pendingCourses.some((c) => c.level >= 8);
-  const hasRetake = DATA.pendingCourses.some((c) => (c.attempts || 0) > 0);
-  const neverFailed = !DATA.completedTerms.some((t) => t.courses.some((c) => c.passed === false));
-  const honorEligible = stats.lastAcc >= 4.6 && neverFailed && DATA.completedTerms.length > 0;
-  const saberProReady = stats.pct >= 75;
-
-  return [
-    { id: "primer-sello", icon: "", title: "Primer sello", desc: "Cerre mi primer semestre en la universidad.", unlocked: DATA.completedTerms.length >= 1 },
-    { id: "nota-perfecta", icon: "", title: "Nota perfecta", desc: "Saque un 5.0 en al menos una materia.", unlocked: hasPerfectGrade },
-    { id: "racha-ascendente", icon: "", title: "Racha ascendente", desc: `Llevo 4 ${bestStreak} periodos seguidos con el promedio en aumento.`, unlocked: bestStreak >= 3 },
-    { id: "medio-camino", icon: "", title: "Medio camino", desc: "Supere el 50% de los créditos de la carrera.", unlocked: stats.pct >= 50 },
-    { id: "poliglota", icon: "", title: "Políglota en construcción", desc: "Aprobe 5 niveles de inglés.", unlocked: highestEnglish >= 5 },
-    { id: "multitarea", icon: "", title: "Modo multitarea", desc: "Llevo 6 materias activas al mismo tiempo.", unlocked: stats.inProgressCount >= 6 },
-    { id: "recta-final", icon: "", title: "Recta final", desc: "Ya tengo materias de nivel 8 en el radar.", unlocked: advancedLevel },
-    { id: "segunda-oportunidad", icon: "", title: "Segunda oportunidad", desc: "Te vas a levantar una materia repitiéndola. Así se hace.", unlocked: hasRetake },
-    { id: "saber-pro", icon: "", title: "Listo para el Saber Pro", desc: "Superaste el 75% de créditos — ya puedes inscribirte (Art. 104).", unlocked: saberProReady },
-    { id: "grado-honorifico", icon: "", title: "Camino al Grado Honorífico", desc: "Promedio ≥ 4.6 y cero materias reprobadas (Art. 83). Sigue así hasta el final.", unlocked: honorEligible },
-  ];
-}
-
-function renderAchievements(stats) {
-  const grid = document.getElementById("achievements-grid");
-  if (!grid) return;
-  const achievements = buildAchievements(stats);
-  grid.innerHTML = achievements.map((a, i) => `
-    <div class="badge ${a.unlocked ? "unlocked" : "locked"}" style="--delay:${i * 60}ms">
-      <span class="badge-icon">${a.icon}</span>
-      <div class="badge-text">
-        <span class="badge-title">${a.title}</span>
-        <span class="badge-desc">${a.desc}</span>
-      </div>
-    </div>`).join("");
-
-  const unlockedCount = achievements.filter((a) => a.unlocked).length;
-  const counter = document.getElementById("achievements-count");
-  if (counter) counter.textContent = `${unlockedCount} / ${achievements.length}`;
-}
-
-
+// ============================================================
+// ANALÍTICA (gráficas SVG hechas a mano — sin librerías)
+// ============================================================
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -704,7 +651,7 @@ function renderProjection() {
   document.getElementById("projection-caption").textContent =
     `Estimado si mantienes un promedio de ${scenarioValue.toFixed(2)} en los ${remaining} periodos que faltan.`;
   const gradEl = document.getElementById("projection-grad");
-  if (gradEl) gradEl.textContent = gradLabel ? ` Periodo estimado de grado: ${gradLabel}` : "";
+  if (gradEl) gradEl.textContent = gradLabel ? `📅 Periodo estimado de grado: ${gradLabel}` : "";
 }
 
 function setScenario(scenario) {
@@ -714,6 +661,8 @@ function setScenario(scenario) {
   renderProjection();
 }
 
+
+// SIMULADOR DE NOTAS
 
 
 function renderSimulator() {
@@ -796,6 +745,8 @@ function updateSimulatorResults() {
   }
 }
 
+
+// RENDER PRINCIPAL (circuito, historial, en curso, roadmap)
 
 
 function renderHero(stats) {
@@ -1072,7 +1023,6 @@ function fullRerender() {
   renderHero(stats);
   renderCircuit();
   renderAll(document.getElementById("search-input")?.value || "");
-  renderAchievements(stats);
   renderSimulator();
   renderResources();
   renderAnalytics();
@@ -1081,6 +1031,15 @@ function fullRerender() {
 }
 
 
+// PANEL DE EDICIÓN
+
+
+
+// PIN DE ACCESO — protección ligera para el panel de edición
+
+// Aviso honesto: esto es una traba de privacidad casual (para que un amigo con el
+// link no toque tus datos por error), NO seguridad real — todo corre en el navegador
+// y cualquiera con herramientas de desarrollador podría saltárselo.
 
 const PIN_KEY = "fox-pin-hash";
 const PIN_SESSION_KEY = "fox-pin-unlocked";
@@ -1183,6 +1142,238 @@ function closeDrawer() {
 function switchEditorTab(tabId) {
   document.querySelectorAll(".editor-tab-btn").forEach((b) => b.classList.toggle("active", b.dataset.tab === tabId));
   document.querySelectorAll(".editor-tab-panel").forEach((p) => p.classList.toggle("active", p.id === `tab-${tabId}`));
+}
+
+
+// IMPORTADOR DE CERTIFICADOS (PDF → historial académico)
+
+// Lee el PDF 100% en el navegador (con PDF.js, la misma librería de Firefox),
+// reconstruye las líneas de texto a partir de sus posiciones x/y, y detecta
+// periodos y materias con expresiones regulares afinadas contra un certificado
+// real del sistema "uenLinea" (usado por varias instituciones colombianas).
+
+const PERIOD_RE = /PER[IÍ]ODO:\s*(\d{4}-\d{2})/i;
+const COURSE_ROW_RE = /^([A-ZÁÉÍÓÚÑ]{2,7}\d{1,3})\s+(.*?)\s+(\d{1,2})\s+(\d[.,]\d)\s+(APROBADO|REPROBADO)\b/i;
+const HEADER_LINE_RE = /\bCOD\b.*\bCURSO\b.*\bCRED\b/i;
+const SUMMARY_LINE_RE = /^(PDO\.|CRED\.|PER[IÍ]ODO:)/i;
+const BARE_NAME_RE = /^[A-ZÁÉÍÓÚÑ0-9.,()\/\-\s]{3,70}$/;
+
+async function extractPdfLines(file) {
+  const buffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+  const allLines = [];
+
+  for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+    const page = await pdf.getPage(pageNum);
+    const content = await page.getTextContent();
+    const rows = new Map(); // y (redondeado) -> [{x, str}]
+
+    content.items.forEach((item) => {
+      const y = Math.round(item.transform[5] / 2) * 2; // tolerancia de 2pt
+      const x = item.transform[4];
+      if (!rows.has(y)) rows.set(y, []);
+      rows.get(y).push({ x, str: item.str });
+    });
+
+    const sortedY = Array.from(rows.keys()).sort((a, b) => b - a); // de arriba hacia abajo
+    sortedY.forEach((y) => {
+      const line = rows.get(y).sort((a, b) => a.x - b.x).map((i) => i.str).join(" ").replace(/\s+/g, " ").trim();
+      if (line) allLines.push(line);
+    });
+  }
+  return allLines;
+}
+
+function parseAcademicLines(lines) {
+  const terms = [];
+  let currentTerm = null;
+  let nameBuffer = [];
+
+  const isStructural = (line) =>
+    PERIOD_RE.test(line) || HEADER_LINE_RE.test(line) || SUMMARY_LINE_RE.test(line);
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    const periodMatch = line.match(PERIOD_RE);
+    if (periodMatch) {
+      if (currentTerm && currentTerm.courses.length) terms.push(currentTerm);
+      currentTerm = { term: periodMatch[1], courses: [] };
+      nameBuffer = [];
+      continue;
+    }
+
+    if (HEADER_LINE_RE.test(line) || SUMMARY_LINE_RE.test(line)) {
+      nameBuffer = [];
+      continue;
+    }
+
+    const courseMatch = line.match(COURSE_ROW_RE);
+    if (courseMatch && currentTerm) {
+      let [, code, inlineName, credits, grade, status] = courseMatch;
+      const hadInlineName = !!(inlineName && inlineName.trim());
+      let name = hadInlineName ? inlineName.trim() : nameBuffer.join(" ").trim();
+
+      // Un nombre "huérfano" (código solo, sin nombre en su misma línea) puede
+      // seguir en la línea de abajo — pero solo en ese caso; si el nombre ya
+      // venía completo junto al código, la siguiente línea es de OTRA materia.
+      if (!hadInlineName) {
+        const next = lines[i + 1];
+        if (next && !isStructural(next) && !COURSE_ROW_RE.test(next) && BARE_NAME_RE.test(next)) {
+          name = `${name} ${next.trim()}`.trim();
+          i++;
+        }
+      }
+
+      currentTerm.courses.push({
+        code: code.toUpperCase(),
+        name: titleCaseSpanish(name || code),
+        credits: parseInt(credits, 10),
+        grade: parseFloat(grade.replace(",", ".")),
+        passed: status.toUpperCase() === "APROBADO",
+      });
+      nameBuffer = [];
+      continue;
+    }
+
+    // Línea que no calza con nada conocido: posible fragmento de nombre de materia
+    if (currentTerm && BARE_NAME_RE.test(line) && !/^[©]/.test(line)) {
+      nameBuffer.push(line);
+    } else {
+      nameBuffer = [];
+    }
+  }
+  if (currentTerm && currentTerm.courses.length) terms.push(currentTerm);
+  return terms;
+}
+
+function titleCaseSpanish(str) {
+  const smallWords = new Set(["de", "la", "el", "y", "en", "a", "del", "las", "los", "para", "con"]);
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((w, i) => {
+      if (!w) return w;
+      if (/^\(?[a-z]\d/.test(w)) return w.toUpperCase(); // niveles tipo (A1), (B1-1)
+      if (i > 0 && smallWords.has(w)) return w;
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    })
+    .join(" ")
+    .replace(/\bIi\b/g, "II").replace(/\bIii\b/g, "III").replace(/\bIv\b/g, "IV").replace(/\bV\b/g, "V");
+}
+
+let importedTermsPending = null;
+
+async function handleImportFile(file) {
+  const statusEl = document.getElementById("import-status");
+  const reviewEl = document.getElementById("import-review");
+  reviewEl.hidden = true;
+  statusEl.innerHTML = `<p class="import-status-msg"> Leyendo tu certificado...</p>`;
+
+  try {
+    if (typeof pdfjsLib === "undefined") {
+      throw new Error("no-pdfjs");
+    }
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+    const lines = await extractPdfLines(file);
+    const terms = parseAcademicLines(lines);
+
+    if (terms.length === 0) {
+      statusEl.innerHTML = `<p class="import-status-msg import-status-error"> No reconocí materias en este PDF. ¿Es un certificado de calificaciones oficial? Puedes seguir usando "Materias actuales" para cargar todo a mano.</p>`;
+      return;
+    }
+
+    importedTermsPending = terms;
+    renderImportReview(terms);
+    statusEl.innerHTML = "";
+  } catch (err) {
+    console.error(err);
+    statusEl.innerHTML = `<p class="import-status-msg import-status-error"> No pude leer ese archivo. Confirma que sea un PDF válido, o cárgalo a mano desde "Materias actuales".</p>`;
+  }
+}
+
+function renderImportReview(terms) {
+  const reviewEl = document.getElementById("import-review");
+  const totalCourses = terms.reduce((s, t) => s + t.courses.length, 0);
+  const totalCredits = terms.reduce((s, t) => s + t.courses.reduce((s2, c) => s2 + (c.passed ? c.credits : 0), 0), 0);
+
+  reviewEl.innerHTML = `
+    <div class="import-summary">
+      <p> Detecté <strong>${terms.length} periodo(s)</strong> y <strong>${totalCourses} materia(s)</strong> — ${totalCredits} créditos aprobados.</p>
+      <p class="import-summary-note">Revisa que se vea bien. Si algo quedó raro, lo puedes corregir después desde el Historial con solo un clic.</p>
+    </div>
+    <div class="import-terms-list">
+      ${terms.map((t) => `
+        <details class="import-term-card" open>
+          <summary>Periodo ${escapeHtml(t.term)} — ${t.courses.length} materia(s)</summary>
+          <table class="import-course-table">
+            ${t.courses.map((c) => `
+              <tr class="${c.passed ? "" : "import-row-failed"}">
+                <td class="mono">${escapeHtml(c.code)}</td>
+                <td>${escapeHtml(c.name)}</td>
+                <td class="mono center">${c.credits}</td>
+                <td class="mono center">${c.grade.toFixed(1)}</td>
+              </tr>`).join("")}
+          </table>
+        </details>
+      `).join("")}
+    </div>
+    <div class="import-actions">
+      <button class="secondary-btn" id="import-cancel-btn">Cancelar</button>
+      <button class="primary-btn" id="import-confirm-btn"> Importar e ir a mi tablero</button>
+    </div>
+  `;
+  reviewEl.hidden = false;
+
+  document.getElementById("import-cancel-btn").addEventListener("click", () => {
+    importedTermsPending = null;
+    reviewEl.hidden = true;
+    document.getElementById("import-pdf-input").value = "";
+  });
+  document.getElementById("import-confirm-btn").addEventListener("click", confirmImport);
+}
+
+function confirmImport() {
+  if (!importedTermsPending) return;
+  if (DATA.completedTerms.length > 0) {
+    const ok = confirm("Esto va a reemplazar tu historial académico actual por el que acabamos de leer del PDF. ¿Seguro?");
+    if (!ok) return;
+  }
+
+  DATA.completedTerms = importedTermsPending.map((t) => ({
+    term: t.term, level: 0, avg: 0, accAvg: 0, credits: 0, accCredits: 0, courses: t.courses,
+  }));
+
+  const importedCodes = new Set(importedTermsPending.flatMap((t) => t.courses.map((c) => c.code)));
+  DATA.pendingCourses = DATA.pendingCourses.filter((c) => !importedCodes.has(c.code) || c.status === "in-progress");
+
+  recomputeChain();
+  saveData();
+  importedTermsPending = null;
+
+  showToast(" ¡Certificado importado! Tu tablero ya está listo.");
+  fullRerender();
+  closeDrawer();
+}
+
+function initImportZone() {
+  const dropzone = document.getElementById("import-dropzone");
+  const input = document.getElementById("import-pdf-input");
+  if (!dropzone || !input) return;
+
+  input.addEventListener("change", () => {
+    if (input.files[0]) handleImportFile(input.files[0]);
+  });
+
+  dropzone.addEventListener("dragover", (e) => { e.preventDefault(); dropzone.classList.add("dragover"); });
+  dropzone.addEventListener("dragleave", () => dropzone.classList.remove("dragover"));
+  dropzone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropzone.classList.remove("dragover");
+    const file = e.dataTransfer.files[0];
+    if (file && file.type === "application/pdf") handleImportFile(file);
+  });
 }
 
 // --- Tab: elegir materias actuales ---
@@ -1478,9 +1669,9 @@ function confirmResetData() {
   renderEditorTabClose();
 }
 
-// ============================================================
+
 // TARJETA DE PERFIL (pasaporte de habilidades + impresión)
-// ============================================================
+
 
 const SKILL_MAP = {
   IS040: "Lógica de programación", IS043: "Lenguajes de programación", IS008: "Estructuras de datos",
@@ -1515,9 +1706,9 @@ function renderProfileCard() {
     : `<p class="empty-msg">Todavía no hay materias aprobadas para mostrar aquí.</p>`;
 }
 
-// ============================================================
-// RADAR DE CARRERA — basado en el Reglamento Estudiantil FUNLAM
-// ============================================================
+
+// RADAR DE CARRERA — basado en el Reglamento Estudiantil UCLA
+
 
 const ROLE_DEFINITIONS = [
   { role: "Desarrollador Backend Junior", needs: ["Lenguajes de programación", "Estructuras de datos", "SQL / Bases de datos"] },
@@ -1654,6 +1845,152 @@ function renderCareerRadar() {
   renderChecklist();
 }
 
+// PREGÚNTALE A FOX — asistente en lenguaje natural, 100% local
+
+// Sin backend, sin API, sin costos: son tus propias funciones de datos
+// (las mismas que alimentan el resto del tablero) detrás de un motor
+// simple de coincidencia de palabras clave.
+
+function normalizeText(s) {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[¿?¡!.,]/g, "")
+    .trim();
+}
+
+function answerAssistantQuestion(rawQ) {
+  const q = normalizeText(rawQ);
+  const stats = computeStats();
+  const has = (...words) => words.every((w) => q.includes(w));
+  const hasAny = (...words) => words.some((w) => q.includes(w));
+
+  if (has("credito") && hasAny("falta", "faltan", "quedan", "cuantos")) {
+    const remaining = stats.total - stats.approvedCredits;
+    const remainingStr = Number.isInteger(remaining) ? remaining : remaining.toFixed(1);
+    return `Te faltan **${remainingStr} créditos** para completar tu carrera (llevas ${stats.approvedCredits} de ${stats.total}, el ${stats.pct.toFixed(1)}%).`;
+  }
+
+  if (q.includes("promedio")) {
+    return `Tu promedio acumulado actual es **${stats.lastAcc.toFixed(2)} / 5.0**.`;
+  }
+
+  if (q.includes("gradu")) {
+    const avgs = DATA.completedTerms.map((t) => t.avg);
+    if (!avgs.length) return "Todavía no tienes periodos cerrados para proyectar tu grado.";
+    const scenarioValue = getScenarioValue();
+    const futureAvgs = Array.from({ length: stats.estSemesters }, () => scenarioValue);
+    const finalAvg = [...avgs, ...futureAvgs].reduce((a, b) => a + b, 0) / (avgs.length + futureAvgs.length);
+    const gradLabel = projectGraduationLabel(stats);
+    return `Si mantienes tu ritmo actual, te graduarías alrededor de **${gradLabel}**, con un promedio final estimado de **${finalAvg.toFixed(2)}**.`;
+  }
+
+  if (q.includes("saber pro") || q.includes("saberpro")) {
+    if (stats.pct >= 75) {
+      return `Sí — ya superaste el 75% de créditos que exige el ICFES, así que **puedes inscribirte al Saber Pro**. Es obligatorio para graduarte (Art. 104 del reglamento).`;
+    }
+    const remaining = Math.ceil((stats.total * 0.75 - stats.approvedCredits) * 10) / 10;
+    return `Todavía no — te faltan **${remaining} créditos** para llegar al 75% que exige el ICFES para poder inscribirte.`;
+  }
+
+  if (has("materia") && hasAny("falta", "faltan", "quedan", "pendiente", "pendientes")) {
+    return `Tienes **${stats.pendingCount} materia(s)** pendientes por iniciar, más las ${stats.inProgressCount} que ya estás cursando este periodo.`;
+  }
+
+  if (hasAny("cursando", "viendo") || (has("este", "semestre")) || (has("este", "periodo"))) {
+    const names = DATA.pendingCourses.filter((c) => c.status === "in-progress").map((c) => c.name);
+    return names.length ? `Ahorita estás viendo: ${names.join(", ")}.` : `No tienes materias activas registradas este periodo.`;
+  }
+
+  if (q.includes("practica")) {
+    const practica = DATA.pendingCourses.find((c) => c.code === "ISPP01");
+    if (!practica) return `Ya cursaste o estás cursando tu Práctica Profesional.`;
+    const periods = estimatePeriodsUntilLevel(10);
+    return periods <= 0
+      ? `Ya estás en el tramo donde se habilita tu Práctica Profesional (nivel 10 de tu pénsum).`
+      : `Tu Práctica Profesional está en el nivel 10 de tu pénsum — a tu ritmo actual, calculo que faltan **~${periods} periodo(s)** para llegar ahí. Recuerda que necesitas afiliación vigente a EPS durante toda la práctica.`;
+  }
+
+  if (hasAny("repruebo", "reprobar", "pierdo", "perder") && q.includes("materia")) {
+    return `Si tu nota queda entre **2.5 y 2.9** y asististe al 80% de las clases, puedes pedir **Recuperación Final** (Art. 97 del reglamento) — la nota quedaría fija en 3.0, sin repetir el curso completo. Ojo: esto no aplica para Práctica Profesional ni Trabajo de Grado.`;
+  }
+
+  if (hasAny("habilidad", "habilidades") || (q.includes("trabaj") && hasAny("que", "en que", "puedo"))) {
+    const skills = new Set(buildSkillsPassport());
+    const ready = ROLE_DEFINITIONS.filter((r) => r.needs.every((n) => skills.has(n))).map((r) => r.role);
+    if (ready.length) return `Con lo que ya sabes, podrías aplicar a: **${ready.join(", ")}**.`;
+    const skillList = Array.from(skills);
+    return skillList.length
+      ? `Todavía estás construyendo tu perfil técnico. Hasta ahora tienes: ${skillList.join(", ")}.`
+      : `Aún no tienes suficientes materias aprobadas para sugerirte roles — ¡sigue avanzando!`;
+  }
+
+  if (hasAny("porcentaje", "avance") || (q.includes("cuanto") && hasAny("llevo", "voy"))) {
+    return `Vas en el **${stats.pct.toFixed(1)}%** de tu carrera (${stats.approvedCredits}/${stats.total} créditos).`;
+  }
+
+  if (hasAny("hola", "ayuda", "quien eres", "que eres")) {
+    return `¡Hola! Soy el asistente de FOX 🦊. Pregúntame sobre los créditos, promedio,  graduación, el Saber Pro, tu práctica profesional, o en qué podrías trabajar con las habilidades actuales.`;
+  }
+
+  return `No estoy seguro de cómo responder eso todavía 🤔. Prueba algo como "¿cuántos créditos me faltan?", "¿cuándo me gradúo?" o "¿ya puedo hacer el Saber Pro?".`;
+}
+
+function formatAssistantText(text) {
+  return escapeHtml(text).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+}
+
+function appendAssistantMessage(log, text, who) {
+  const row = document.createElement("div");
+  row.className = `assistant-msg assistant-msg-${who}`;
+  row.innerHTML =
+    who === "fox"
+      ? `<span class="assistant-avatar">🦊</span><span class="assistant-bubble">${formatAssistantText(text)}</span>`
+      : `<span class="assistant-bubble">${escapeHtml(text)}</span>`;
+  log.appendChild(row);
+  log.scrollTop = log.scrollHeight;
+  return row;
+}
+
+function appendAssistantTyping(log) {
+  const row = document.createElement("div");
+  row.className = "assistant-msg assistant-msg-fox assistant-typing";
+  row.innerHTML = `<span class="assistant-avatar">🦊</span><span class="assistant-bubble">···</span>`;
+  log.appendChild(row);
+  log.scrollTop = log.scrollHeight;
+  return row;
+}
+
+function initAssistant() {
+  const form = document.getElementById("assistant-form");
+  const input = document.getElementById("assistant-input");
+  const log = document.getElementById("assistant-log");
+  if (!form || !input || !log) return;
+
+  const ask = (question) => {
+    const q = question.trim();
+    if (!q) return;
+    appendAssistantMessage(log, q, "user");
+    input.value = "";
+    const typingRow = appendAssistantTyping(log);
+    const delay = 400 + Math.random() * 400;
+    setTimeout(() => {
+      typingRow.remove();
+      appendAssistantMessage(log, answerAssistantQuestion(q), "fox");
+    }, delay);
+  };
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    ask(input.value);
+  });
+
+  document.querySelectorAll(".assistant-chip").forEach((chip) => {
+    chip.addEventListener("click", () => ask(chip.textContent));
+  });
+}
+
 function openProfileModal() {
   renderProfileCard();
   document.getElementById("profile-overlay").classList.add("open");
@@ -1667,7 +2004,9 @@ function closeProfileModal() {
   deactivateFocusTrap();
 }
 
-
+// ============================================================
+// ACCESIBILIDAD: trampa de foco para drawer / modal
+// ============================================================
 
 let focusTrapHandler = null;
 let lastFocusedBeforeTrap = null;
@@ -1947,6 +2286,8 @@ function init() {
   document.getElementById("close-editor-btn").addEventListener("click", closeDrawer);
   document.getElementById("editor-overlay").addEventListener("click", closeDrawer);
   document.getElementById("editor-drawer").addEventListener("trap-escape", closeDrawer);
+  initImportZone();
+  initAssistant();
   document.querySelectorAll(".editor-tab-btn").forEach((btn) => {
     btn.addEventListener("click", () => switchEditorTab(btn.dataset.tab));
   });
@@ -1981,7 +2322,7 @@ function init() {
   }
 
   console.log(
-    "%c FOX %c— tablero académico de Ingeniería de Sistemas.",
+    "%c🦊 FOX %c— tablero académico de Ingeniería de Sistemas.",
     "color:#4CC9F0;font-weight:bold;font-size:14px;",
     "color:#A8B0C4;font-size:12px;"
   );
