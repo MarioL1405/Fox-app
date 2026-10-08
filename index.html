@@ -4,10 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FOX · Tablero académico — Ingeniería de Sistemas</title>
-<meta name="description" content="Tablero académico de Ingeniería de Sistemas: progreso, logros, analítica y simulador de notas." />
+<meta name="description" content="Tablero académico de Ingeniería de Sistemas: progreso, analítica y simulador de notas." />
 <meta name="theme-color" content="#0B111E" />
 <meta property="og:title" content="FOX — Tablero académico" />
-<meta property="og:description" content="Progreso de Ingeniería de Sistemas: logros, analítica y simulador de notas." />
+<meta property="og:description" content="Progreso de Ingeniería de Sistemas: analítica y simulador de notas." />
 <meta property="og:type" content="website" />
 <meta property="og:image" content="icons/icon-512.png" />
 <meta name="twitter:card" content="summary" />
@@ -18,6 +18,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 <body>
   <div class="bg-decor" aria-hidden="true">
@@ -116,12 +117,12 @@
       <path id="mountain-front-real" class="mountain-layer mountain-front-real" fill="url(#mountain-front-grad)" d="" />
       <path id="mountain-ridge-line" class="mountain-ridge-line" d="" />
 
-      <!-- Árbol de progreso: crece con  % real de créditos aprobados -->
+      <!-- Árbol de progreso: crece con tu % real de créditos aprobados -->
       <g id="progress-tree"></g>
     </svg>
   </div>
 
-
+  <!-- ============ HEADER ============ -->
   <header class="site-header">
     <div class="header-inner">
       <div class="brand">
@@ -153,7 +154,7 @@
 
   <main>
 
-   
+    <!-- ============ SALUDO ============ -->
     <section class="greeting-bar">
       <div class="greeting-inner">
         <span class="greeting-fox" aria-hidden="true">
@@ -169,14 +170,14 @@
       </div>
     </section>
 
- 
+    <!-- ============ HERO / RESUMEN ============ -->
     <section class="hero">
       <div class="hero-inner">
         <div class="hero-left">
           <p class="eyebrow">Certificado académico · 2026</p>
           <h1><span id="hero-approved">104</span> créditos en firme.<br><span id="hero-remaining">66</span> por delante.</h1>
           <p class="hero-desc">
-            Este es el estado real de mi carrera: lo que ya quedó sellado en el certificado,
+            Este es el estado real de mi carrera: lo que ya quedó sellado y certificado,
             lo que estoy cursando ahora mismo, y el camino exacto que me falta para llegar a
             <strong>Ingeniero de Sistemas</strong>.
           </p>
@@ -227,16 +228,35 @@
       </div>
     </section>
 
-    <!-- ============ LOGROS ============ -->
-    <section class="content-section achievements-section">
+    <!-- ============ PREGÚNTALE A FOX ============ -->
+    <section class="content-section" id="section-assistant">
       <div class="section-heading">
-        <div class="section-heading-row">
-          <h2>Logros</h2>
-          <span class="pill pill-credits" id="achievements-count">0 / 8</span>
-        </div>
-        <p>Insignias que se desbloquean solas según tu progreso real. Hay una escondida. </p>
+        <h2>Pregúntale a FOX</h2>
+        <p>Escribe una pregunta sobre tu carrera y te respondo al instante con tus datos reales — no es magia, es tu propio tablero hablando.</p>
       </div>
-      <div class="badge-grid" id="achievements-grid"></div>
+
+      <div class="assistant-card">
+        <div class="assistant-log" id="assistant-log">
+          <div class="assistant-msg assistant-msg-fox">
+            <span class="assistant-avatar">🦊</span>
+            <span class="assistant-bubble">¡Hola! Pregúntame lo que quieras sobre tu carrera — o toca una de las sugerencias de abajo.</span>
+          </div>
+        </div>
+
+        <form class="assistant-form" id="assistant-form">
+          <input type="text" id="assistant-input" placeholder="ej. ¿cuándo me gradúo?" autocomplete="off" />
+          <button type="submit" class="primary-btn assistant-send">Preguntar</button>
+        </form>
+
+        <div class="assistant-chips">
+          <button type="button" class="assistant-chip">¿Cuántos créditos me faltan?</button>
+          <button type="button" class="assistant-chip">¿Cuándo me gradúo?</button>
+          <button type="button" class="assistant-chip">¿Ya puedo hacer el Saber Pro?</button>
+          <button type="button" class="assistant-chip">¿Qué estoy cursando?</button>
+          <button type="button" class="assistant-chip">¿En qué podría trabajar?</button>
+          <button type="button" class="assistant-chip">¿Qué pasa si pierdo una materia?</button>
+        </div>
+      </div>
     </section>
 
     <!-- ============ ANALÍTICA ============ -->
@@ -367,36 +387,36 @@
     <!-- ============ RADAR DE CARRERA ============ -->
     <section class="content-section" id="section-career">
       <div class="section-heading">
-        <h2> Radar de carrera</h2>
-        <p>Preparación real para lo que viene después del pénsum.</p>
+        <h2>Radar de carrera</h2>
+        <p>Preparación real para lo que viene después del pénsum — basado en tu Reglamento Estudiantil y tus datos actuales.</p>
       </div>
 
       <div class="career-grid">
         <div class="career-card" id="career-saberpro">
-          <div class="career-card-head"><span class="career-icon"></span><h4>Saber Pro</h4></div>
+          <div class="career-card-head"><h4>Saber Pro</h4></div>
           <p class="career-desc" id="saberpro-desc">Cargando...</p>
           <div class="career-progress-bar"><div class="career-progress-fill" id="saberpro-fill"></div></div>
           <a href="https://www.icfes.gov.co/evaluaciones-icfes/cronograma-de-evaluaciones/cronograma-examen-saber-pro/" target="_blank" rel="noopener" class="career-link">Cronograma oficial ICFES ↗</a>
         </div>
 
         <div class="career-card" id="career-practica">
-          <div class="career-card-head"><span class="career-icon"></span><h4>Práctica Profesional</h4></div>
+          <div class="career-card-head"><h4>Práctica Profesional</h4></div>
           <p class="career-desc" id="practica-desc">Cargando...</p>
-          <p class="career-note">Recordatorio: afiliación vigente a EPS durante toda la práctica (requisito del reglamento).</p>
+          <p class="career-note"> Recuerda: necesitas afiliación vigente a EPS durante toda la práctica (requisito del reglamento).</p>
         </div>
 
         <div class="career-card wide" id="career-roles">
-          <div class="career-card-head"><span class="career-icon"></span><h4>Con lo que ya sabes, podrías aplicar a...</h4></div>
+          <div class="career-card-head"><h4>Con lo que ya sabes, podrías aplicar a...</h4></div>
           <div class="role-chips" id="role-chips"></div>
         </div>
 
         <div class="career-card wide" id="career-boards">
-          <div class="career-card-head"><span class="career-icon"></span><h4>Radar de bolsas de empleo</h4></div>
+          <div class="career-card-head"><h4>Radar de bolsas de empleo</h4></div>
           <div class="board-links" id="board-links"></div>
         </div>
 
         <div class="career-card wide" id="career-checklist">
-          <div class="career-card-head"><span class="career-icon"></span><h4>Listo para prácticas / primer empleo</h4></div>
+          <div class="career-card-head"><h4>Listo para prácticas / primer empleo</h4></div>
           <div class="checklist-items" id="checklist-items"></div>
         </div>
       </div>
@@ -405,27 +425,42 @@
   </main>
 
   <footer class="site-footer">
-    <p>FOX · A la la medida para Luis Mario Medrano Páez · Ingeniería de Sistemas · Universidad Católica Luis Amigó, Apartadó</p>
-    <p class="footer-fine">Datos según certificado de calificaciones oficial y el Reglamento Estudiantil FUNLAM. Notas y logros se guardan solo en este navegador. © <span id="year-now"></span></p>
-    <button class="print-link-btn" id="print-page-btn"> Imprimir / guardar como PDF</button>
+    <p>FOX · A la medida para Luis Mario Medrano Páez · Ingeniería de Sistemas · Universidad Católica Luis Amigó, Apartadó</p>
+    <p class="footer-fine">Datos según certificado de calificaciones oficial y el Reglamento Estudiantil UCLAM. Notas y datos se guardan solo en este navegador. © <span id="year-now"></span></p>
+    <button class="print-link-btn" id="print-page-btn">🖨️ Imprimir / guardar como PDF</button>
   </footer>
 
-  
+  <!-- ============ PANEL DE EDICIÓN ============ -->
   <div class="editor-overlay" id="editor-overlay"></div>
   <aside class="editor-drawer" id="editor-drawer" aria-label="Panel de edición">
     <div class="editor-header">
-      <h3> Panel de control</h3>
+      <h3>🛠️ Panel de control</h3>
       <button class="icon-btn" id="close-editor-btn" aria-label="Cerrar panel">✕</button>
     </div>
 
     <div class="editor-tabs">
-      <button class="editor-tab-btn active" data-tab="courses">Materias actuales</button>
+      <button class="editor-tab-btn active" data-tab="import">Importar</button>
+      <button class="editor-tab-btn" data-tab="courses">Materias actuales</button>
       <button class="editor-tab-btn" data-tab="close">Cerrar periodo</button>
       <button class="editor-tab-btn" data-tab="backup">Copia de seguridad</button>
     </div>
 
-    <div class="editor-tab-panel active" id="tab-courses">
-      <p class="editor-tab-desc">Marca las materias que estás viendo este periodo. Las bloqueadas necesitan un prerrequisito primero.</p>
+    <div class="editor-tab-panel active" id="tab-import">
+      <p class="editor-tab-desc"> Sube tu certificado de calificaciones oficial (PDF) y arma tu historial académico completo en segundos — sin escribir nada a mano. Todo se procesa en tu navegador; el archivo nunca sale de tu computador.</p>
+
+      <label class="import-dropzone" id="import-dropzone">
+        <input type="file" id="import-pdf-input" accept="application/pdf" hidden />
+        <span class="import-dropzone-icon"> </span>
+        <span class="import-dropzone-text">Clic para elegir tu certificado en PDF</span>
+        <span class="import-dropzone-hint">o arrástralo aquí</span>
+      </label>
+
+      <div id="import-status"></div>
+      <div id="import-review" hidden></div>
+    </div>
+
+    <div class="editor-tab-panel" id="tab-courses">
+      <p class="editor-tab-desc">Marca las materias que estás viendo este periodo. Las bloqueadas  necesitan un prerrequisito primero.</p>
       <div class="editor-course-list" id="editor-course-list"></div>
       <button class="primary-btn" id="save-courses-btn">Guardar selección</button>
       <div class="editor-elective-pools" id="editor-elective-pools"></div>
@@ -448,7 +483,7 @@
     </div>
 
     <div class="editor-tab-panel" id="tab-backup">
-      <p class="editor-tab-desc">Mis datos viven solo en este navegador. Descarga una copia de vez en cuando para no perder nada.</p>
+      <p class="editor-tab-desc">Tus datos viven solo en este navegador. Descarga una copia de vez en cuando para no perder nada.</p>
       <button class="secondary-btn" id="export-backup-btn"> Descargar copia (JSON)</button>
       <label class="secondary-btn file-btn">
          Restaurar desde archivo
@@ -457,7 +492,7 @@
       <hr class="editor-divider" />
       <div id="pin-section"></div>
       <hr class="editor-divider" />
-      <button class="danger-btn" id="reset-data-btn"> Restaurar datos originales del certificado</button>
+      <button class="danger-btn" id="reset-data-btn">↩️ Restaurar datos originales del certificado</button>
     </div>
   </aside>
 
@@ -492,7 +527,7 @@
       <h4>Habilidades técnicas</h4>
       <div class="skills-chips" id="profile-skills"></div>
 
-      <button class="primary-btn" id="print-profile-btn"> Descargar / imprimir tarjeta</button>
+      <button class="primary-btn" id="print-profile-btn">🖨️ Descargar / imprimir tarjeta</button>
     </div>
   </div>
 
